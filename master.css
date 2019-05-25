@@ -1,0 +1,15 @@
+.megaGrid {
+  display: grid;
+  grid-template-columns: minmax(30px, 1fr) auto minmax(30px, 1fr);
+  grid-template-rows: minmax(30px, 1fr) auto minmax(30px, 1fr);
+}
+
+.calcGrid {
+  display: grid;
+
+  background-color: silver;
+  width: 120px;
+  height: 120px;
+  grid-column-start: 2;
+  grid-row-start: 2;
+}
