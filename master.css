@@ -1,4 +1,4 @@
-body, div {
+body, div, h2 {
   margin: 0;
   padding: 0;
 }
@@ -22,8 +22,6 @@ body, div {
 
 
   /* setup of the case */
-  /* width: 560px; */
-  height: 720px;
   grid-column-start: 2;
   grid-row-start: 2;
 
@@ -33,12 +31,9 @@ body, div {
 }
 
 .screen {
-  /* width: 400px;
-  height: 160px; */
-
   background-color: white;
   grid-column: span 10;
-  grid-row: span 4;
+  grid-row: span 3;
 }
 
 .mini {
