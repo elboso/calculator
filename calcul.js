@@ -1,4 +1,6 @@
 let displayInput =[24,'+',8,'-',4];
+let indNumber = 8
+let screenDisplay ='24 + 8 - 4'
 
 // 1,2,4,124,n = 1+124+n
 function add(...numbers) {
@@ -25,8 +27,8 @@ function divide(...numbers) {
     return accumulator / currentValue;
   });
 };
-const operators = [plus,minus,multy,div];
 
+// does not check for operation priorities
 function compute(arr){
   let tempArr = arr.map(x=>x);
   if (tempArr.length>2 && typeof tempArr[tempArr.length-1]==='number'){
@@ -47,4 +49,25 @@ function compute(arr){
     return compute(tempArr);
   }
   else return tempArr[0];
+}
+
+//check for operation priorities
+function operate(arr){
+  let tempArr = arr.map(x=>x);
+  if (tempArr.includes('*') || tempArr.includes('/')){
+    let rslt = 'argtttt';
+    for (let i = 0; i < tempArr.length; i++) {
+      if (tempArr[i] ==='*') {
+        rslt = multiply(tempArr[i-1],tempArr[i+1]);
+        tempArr.splice(i-1,i,rslt);
+        return operate(tempArr);
+      }
+      else if (tempArr[i] ==='/') {
+        rslt = divide(tempArr[i-1],tempArr[i+1]);
+        tempArr.splice(i-1,i,rslt);
+        return operate(tempArr);
+      }
+    }
+  }
+  else return compute(tempArr);
 }
