@@ -1,6 +1,9 @@
-let displayInput =[24,'+',8,'-',4];
-let indNumber = 8
-let screenDisplay ='24 + 8 - 4'
+let displayInput =[24,'+',8,'-'];
+
+let screenDisplay ='24 + 8 - 4';
+
+const calcLine = document.querySelector('#firstLine')
+calcLine.textContent = screenDisplay;
 
 // 1,2,4,124,n = 1+124+n
 function add(...numbers) {
@@ -49,7 +52,7 @@ function compute(arr){
     return compute(tempArr);
   }
   else return tempArr[0];
-}
+};
 
 //check for operation priorities
 function operate(arr){
@@ -70,4 +73,14 @@ function operate(arr){
     }
   }
   else return compute(tempArr);
-}
+};
+
+function agregate (input,arr) {
+  let i = arr.length-1;
+  if (typeof arr[arr.length-1]!=="number") {
+    i++;
+    arr.push('');
+  };
+  arr[i] = Number(arr[i].toString().concat(input));
+  return arr;
+};
