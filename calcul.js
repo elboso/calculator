@@ -1,9 +1,10 @@
-let displayInput =[24,'+',8,'-'];
-
+let displayInput =[24,'*',4,'*',78];
+let uniqueNumber = '';
 let screenDisplay ='24 + 8 - 4';
 
-const calcLine = document.querySelector('#firstLine')
-calcLine.textContent = screenDisplay;
+const calcLine = document.querySelector('#firstLine');
+const resultLine = document.querySelector('#secondLine');
+calcLine.textContent = displayInput.join(' ');
 
 // 1,2,4,124,n = 1+124+n
 function add(...numbers) {
@@ -62,12 +63,12 @@ function operate(arr){
     for (let i = 0; i < tempArr.length; i++) {
       if (tempArr[i] ==='*') {
         rslt = multiply(tempArr[i-1],tempArr[i+1]);
-        tempArr.splice(i-1,i,rslt);
+        tempArr.splice(i-1,i+2,rslt);
         return operate(tempArr);
       }
       else if (tempArr[i] ==='/') {
         rslt = divide(tempArr[i-1],tempArr[i+1]);
-        tempArr.splice(i-1,i,rslt);
+        tempArr.splice(i-1,i+2,rslt);
         return operate(tempArr);
       }
     }
@@ -75,6 +76,7 @@ function operate(arr){
   else return compute(tempArr);
 };
 
+//useless
 function agregate (input,arr) {
   let i = arr.length-1;
   if (typeof arr[arr.length-1]!=="number") {
@@ -84,3 +86,62 @@ function agregate (input,arr) {
   arr[i] = Number(arr[i].toString().concat(input));
   return arr;
 };
+
+//set what is displayed on line one
+function setDisplayOne () {
+  const finalInput = displayInput.join(' ');
+  calcLine.textContent = finalInput;
+};
+// set what is displayed on the result line
+function setDisplayTwo () {
+  const resultat = operate(displayInput);
+  resultLine.textContent = resultat;
+};
+
+// display the result as the new number
+function setDisplayOneEqual (){
+  const resultat = operate(displayInput);
+  console.log(displayInput);
+  displayInput = [resultat];
+  console.log(displayInput);
+  uniqueNumber=resultat;
+  calcLine.textContent = displayInput;
+  resultLine.textContent = '';
+};
+
+
+// inscribe numbers
+function inscribeNumber (input){
+  const content = input.dataset.num;
+  uniqueNumber = Number(uniqueNumber.toString().concat(content));
+  displayInput[displayInput.length-1]=uniqueNumber;
+  setDisplayOne();
+  if(displayInput.length > 2) {setDisplayTwo()};
+};
+//inscribe operator
+function inscribeOperator (input) {
+  const content = input.dataset.num;
+  displayInput.push(content);
+  displayInput.push('');
+  uniqueNumber = ''; //reset uniqueNumber for next num
+  setDisplayOne();
+}
+
+const btnDigit = document.querySelectorAll('button.digit');
+console.log(btnDigit);
+
+const btnOperator = document.querySelectorAll('button.operator');
+console.log(btnOperator);
+
+const resultat = document.querySelector('#equal');
+console.log(resultat);
+
+resultat.addEventListener('click',()=>{setDisplayOneEqual()});
+
+btnDigit.forEach((btn)=> {
+  btn.addEventListener('click', ()=>{inscribeNumber(btn)});
+});
+
+btnOperator.forEach((btn)=> {
+  btn.addEventListener('click', ()=>{inscribeOperator(btn)});
+});
