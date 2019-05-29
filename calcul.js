@@ -1,6 +1,5 @@
 let displayInput =[24,'*',4,'*',78];
 let uniqueNumber = '';
-let screenDisplay ='24 + 8 - 4';
 
 const calcScreen = document.querySelector('.screen');
 const calcLine = document.querySelector('#firstLine');
@@ -63,13 +62,17 @@ function operate(arr){
     let rslt = 'argtttt';
     for (let i = 0; i < tempArr.length; i++) {
       if (tempArr[i] ==='*') {
+        console.log(`${tempArr[i-1]}, ${tempArr[i]}, ${tempArr[i+1]}`);
+        console.log(tempArr);
         rslt = multiply(tempArr[i-1],tempArr[i+1]);
-        tempArr.splice(i-1,i+2,rslt);
+        tempArr.splice(i-1,3,rslt);
+        console.log(tempArr);
         return operate(tempArr);
       }
       else if (tempArr[i] ==='/') {
+        console.log(`DIV ${tempArr[i-1]}, ${tempArr[i]}, ${tempArr[i+1]}`);
         rslt = divide(tempArr[i-1],tempArr[i+1]);
-        tempArr.splice(i-1,i+2,rslt);
+        tempArr.splice(i-1,3,rslt);
         return operate(tempArr);
       }
     }
@@ -157,9 +160,7 @@ const clear = document.querySelector('#clear');
 
 const btnDigit = document.querySelectorAll('button.digit');
 
-
 const btnOperator = document.querySelectorAll('button.operator');
-
 
 const resultat = document.querySelector('#equal');
 
