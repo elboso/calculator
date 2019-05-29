@@ -2,6 +2,7 @@ let displayInput =[24,'*',4,'*',78];
 let uniqueNumber = '';
 let screenDisplay ='24 + 8 - 4';
 
+const calcScreen = document.querySelector('.screen');
 const calcLine = document.querySelector('#firstLine');
 const resultLine = document.querySelector('#secondLine');
 calcLine.textContent = displayInput.join(' ');
@@ -96,14 +97,21 @@ function setDisplayOne () {
 function setDisplayTwo () {
   const resultat = operate(displayInput);
   resultLine.textContent = resultat;
+  calcScreen.classList.remove('error');
 };
 
 // display the result as the new number
 function setDisplayOneEqual (){
   const resultat = operate(displayInput);
-  console.log(displayInput);
+  if(resultat===Infinity){
+    errorMessage('No dividing by zero!');
+    return;
+  }
+  else if (typeof displayInput[displayInput.length-1]!== 'number'){
+    errorMessage('You are missing a number')
+    return;
+  }
   displayInput = [resultat];
-  console.log(displayInput);
   uniqueNumber=resultat;
   calcLine.textContent = displayInput;
   resultLine.textContent = '';
@@ -121,20 +129,41 @@ function inscribeNumber (input){
 //inscribe operator
 function inscribeOperator (input) {
   const content = input.dataset.num;
+  if (typeof displayInput[displayInput.length-1]!== 'number') {
+    errorMessage('You cannot put two operator in a row');
+    return;
+  };
   displayInput.push(content);
   displayInput.push('');
   uniqueNumber = ''; //reset uniqueNumber for next num
   setDisplayOne();
 }
 
+// clear displayInput and uniqueNumber to start anew
+function reset(){
+  displayInput = [''];
+  uniqueNumber = '';
+  // clean the screen
+  calcLine.textContent = '';
+  resultLine.textContent = '';
+}
+
+function errorMessage (text){
+  resultLine.textContent = `Error : ${text}`;
+  calcScreen.classList.add('error');
+  };
+
+const clear = document.querySelector('#clear');
+
 const btnDigit = document.querySelectorAll('button.digit');
-console.log(btnDigit);
+
 
 const btnOperator = document.querySelectorAll('button.operator');
-console.log(btnOperator);
+
 
 const resultat = document.querySelector('#equal');
-console.log(resultat);
+
+clear.addEventListener('click',()=>{reset()});
 
 resultat.addEventListener('click',()=>{setDisplayOneEqual()});
 
