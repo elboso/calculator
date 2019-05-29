@@ -8,10 +8,11 @@ const calcScreen = document.querySelector('.screen');
 const calcLine = document.querySelector('#firstLine');
 const resultLine = document.querySelector('#secondLine');
 // buttons
-const clear = document.querySelector('#clear');
 const btnDigit = document.querySelectorAll('button.digit');
 const btnOperator = document.querySelectorAll('button.operator');
 const resultat = document.querySelector('#equal');
+const clear = document.querySelector('#clear');
+const dot = document.querySelector('#point');
 
 calcLine.textContent = displayInput.join(' '); // add default content
 
@@ -133,6 +134,10 @@ function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
 
+function hasDecimal(num) {
+  return num % 1 !== 0;
+}
+
 //----------------------BUTTONS--------------------------------------
 // inscribe numbers
 function inscribeNumber (input){
@@ -154,6 +159,15 @@ function inscribeOperator (input) {
   uniqueNumber = ''; //reset uniqueNumber for next num
   setDisplayOne();
 }
+
+//inscribe decimal
+function addDecimal(){
+  if (hasDecimal(uniqueNumber)){return};
+  uniqueNumber = uniqueNumber.toString().concat('.');//does not change to num to keep the decimal because 4. = 4
+  displayInput[displayInput.length-1]=uniqueNumber;
+  setDisplayOne();
+  if(displayInput.length > 2) {setDisplayTwo()};
+};
 
 // CLEAR displayInput and uniqueNumber to start anew
 function reset(){
@@ -186,3 +200,5 @@ btnDigit.forEach((btn)=> {
 btnOperator.forEach((btn)=> {
   btn.addEventListener('click', ()=>{inscribeOperator(btn)});
 });
+
+dot.addEventListener('click',()=>{addDecimal()});
