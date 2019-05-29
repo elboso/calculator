@@ -1,39 +1,48 @@
-let displayInput =[24,'*',4,'*',78];
-let uniqueNumber = '';
+// global variables that serves as calculator memory
+let displayInput =[24,'*',4,'*',78]; //Stores the whole operation as an array
+let uniqueNumber = 78;// Stores the last number
 
+//setup SELECTOR
+// screen
 const calcScreen = document.querySelector('.screen');
 const calcLine = document.querySelector('#firstLine');
 const resultLine = document.querySelector('#secondLine');
-calcLine.textContent = displayInput.join(' ');
+// buttons
+const clear = document.querySelector('#clear');
+const btnDigit = document.querySelectorAll('button.digit');
+const btnOperator = document.querySelectorAll('button.operator');
+const resultat = document.querySelector('#equal');
 
+calcLine.textContent = displayInput.join(' '); // add default content
+
+//----------------------OPERATIONS-------------------------------------
+//BASIC operations
 // 1,2,4,124,n = 1+124+n
 function add(...numbers) {
   return numbers.reduce((accumulator, currentValue)=>{
     return accumulator + currentValue;
   });
 };
-
 // 1,2,4,124,n = 1-124-n
 function substract(...numbers) {
   return numbers.reduce((accumulator, currentValue)=>{
     return accumulator - currentValue;
   });
 };
-
 function multiply(...numbers) {
   return numbers.reduce((accumulator, currentValue)=>{
     return accumulator * currentValue;
   });
 };
-
 function divide(...numbers) {
   return numbers.reduce((accumulator, currentValue)=>{
     return accumulator / currentValue;
   });
 };
+// COMPLEX operation -> handles series of operation
 
-// does not check for operation priorities
-function compute(arr){
+function compute(arr) // does not check for operation priorities
+{
   let tempArr = arr.map(x=>x);
   if (tempArr.length>2 && typeof tempArr[tempArr.length-1]==='number'){
     let rslt = 'argtttt';
@@ -55,22 +64,18 @@ function compute(arr){
   else return tempArr[0];
 };
 
-//check for operation priorities
-function operate(arr){
+function operate(arr) //check for operation priorities
+{
   let tempArr = arr.map(x=>x);
   if (tempArr.includes('*') || tempArr.includes('/')){
     let rslt = 'argtttt';
     for (let i = 0; i < tempArr.length; i++) {
       if (tempArr[i] ==='*') {
-        console.log(`${tempArr[i-1]}, ${tempArr[i]}, ${tempArr[i+1]}`);
-        console.log(tempArr);
         rslt = multiply(tempArr[i-1],tempArr[i+1]);
         tempArr.splice(i-1,3,rslt);
-        console.log(tempArr);
         return operate(tempArr);
       }
       else if (tempArr[i] ==='/') {
-        console.log(`DIV ${tempArr[i-1]}, ${tempArr[i]}, ${tempArr[i+1]}`);
         rslt = divide(tempArr[i-1],tempArr[i+1]);
         tempArr.splice(i-1,3,rslt);
         return operate(tempArr);
@@ -91,12 +96,13 @@ function agregate (input,arr) {
   return arr;
 };
 
-//set what is displayed on line one
+//-------------------------DISPLAY-----------------------------------
+//set what is displayed on CALC LINE (first line)
 function setDisplayOne () {
   const finalInput = displayInput.join(' ');
   calcLine.textContent = finalInput;
 };
-// set what is displayed on the result line
+// set what is displayed on the RESULT LINE (second line)
 function setDisplayTwo () {
   const resultat = operate(displayInput);
   resultLine.textContent = resultat;
@@ -120,7 +126,7 @@ function setDisplayOneEqual (){
   resultLine.textContent = '';
 };
 
-
+//----------------------BUTTONS--------------------------------------
 // inscribe numbers
 function inscribeNumber (input){
   const content = input.dataset.num;
@@ -142,7 +148,7 @@ function inscribeOperator (input) {
   setDisplayOne();
 }
 
-// clear displayInput and uniqueNumber to start anew
+// CLEAR displayInput and uniqueNumber to start anew
 function reset(){
   displayInput = [''];
   uniqueNumber = '';
@@ -151,19 +157,17 @@ function reset(){
   resultLine.textContent = '';
 }
 
+// used to handle unauthorized action
 function errorMessage (text){
   resultLine.textContent = `Error : ${text}`;
   calcScreen.classList.add('error');
   };
+// used in :
+// setDisplayOneEqual () 2x
+// inscribeOperator (input)
 
-const clear = document.querySelector('#clear');
 
-const btnDigit = document.querySelectorAll('button.digit');
-
-const btnOperator = document.querySelectorAll('button.operator');
-
-const resultat = document.querySelector('#equal');
-
+// Buttons onclick events
 clear.addEventListener('click',()=>{reset()});
 
 resultat.addEventListener('click',()=>{setDisplayOneEqual()});
