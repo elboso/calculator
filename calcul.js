@@ -13,6 +13,7 @@ const btnOperator = document.querySelectorAll('button.operator');
 const resultat = document.querySelector('#equal');
 const clear = document.querySelector('#clear');
 const dot = document.querySelector('#point');
+const backSpace = document.querySelector('#backSpace');
 
 calcLine.textContent = displayInput.join(' '); // add default content
 
@@ -45,19 +46,13 @@ function divide(...numbers) {
 function compute(arr) // does not check for operation priorities
 {
   let tempArr = arr.map(x=>x);
-  if (tempArr.length>2 && typeof tempArr[tempArr.length-1]==='number'){
+  if (tempArr.length>2){
     let rslt = 'argtttt';
     if (tempArr[1]==='+') {
       rslt = add(tempArr[0],tempArr[2]);
     }
     else if (tempArr[1]==='-') {
       rslt = substract(tempArr[0],tempArr[2]);
-    }
-    else if (tempArr[1]==='*') {
-      rslt = multiply(arr[0],tempArr[2]);
-    }
-    else if (tempArr[1]==='/') {
-      rslt = divide(tempArr[0],tempArr[2]);
     }
     tempArr.splice(0,3,rslt);
     return compute(tempArr);
@@ -169,6 +164,35 @@ function addDecimal(){
   if(displayInput.length > 2) {setDisplayTwo()};
 };
 
+// remove the last digit / operator
+function removeDigit(){
+  if (displayInput[0] === '' && displayInput.length === 1 && uniqueNumber === ''){return ;};
+  if (uniqueNumber.toString().length<2){
+    if(displayInput.length===1){
+      reset();
+    }
+    else if (uniqueNumber==='') {
+      displayInput.pop();
+      displayInput.pop();
+      uniqueNumber = displayInput[displayInput.length-1];
+    }
+    else {
+      uniqueNumber='';
+      displayInput[displayInput.length-1] = uniqueNumber;
+    }
+  }
+  else {
+    let arrayNumber = uniqueNumber.toString().split('');
+    arrayNumber.pop();
+    uniqueNumber = Number(arrayNumber.join(''));
+    displayInput[displayInput.length-1]=uniqueNumber;
+  }
+
+  console.log('Faim :',displayInput,uniqueNumber);
+  setDisplayOne();
+  setDisplayTwo();
+};
+
 // CLEAR displayInput and uniqueNumber to start anew
 function reset(){
   displayInput = [''];
@@ -202,3 +226,5 @@ btnOperator.forEach((btn)=> {
 });
 
 dot.addEventListener('click',()=>{addDecimal()});
+
+backSpace.addEventListener('click',()=>{removeDigit()});
