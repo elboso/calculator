@@ -99,13 +99,14 @@ function agregate (input,arr) {
 //-------------------------DISPLAY-----------------------------------
 //set what is displayed on CALC LINE (first line)
 function setDisplayOne () {
-  const finalInput = displayInput.join(' ');
-  calcLine.textContent = finalInput;
+  const roundInput = displayInput.map(num=>round(num,4));
+  // const finalInput = displayInput.join(' ');
+  calcLine.textContent = roundInput.join(' ');
 };
 // set what is displayed on the RESULT LINE (second line)
 function setDisplayTwo () {
-  const resultat = operate(displayInput);
-  resultLine.textContent = resultat;
+  const resultat = round(operate(displayInput),4);
+  resultLine.textContent = resultat
   calcScreen.classList.remove('error');
 };
 
@@ -122,9 +123,15 @@ function setDisplayOneEqual (){
   }
   displayInput = [resultat];
   uniqueNumber=resultat;
-  calcLine.textContent = displayInput;
+  calcLine.textContent = round(resultat,4);
   resultLine.textContent = '';
 };
+
+//helps with rounding precision
+function round(value, decimals) {
+  if (typeof value !== "number") {return value};
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
 
 //----------------------BUTTONS--------------------------------------
 // inscribe numbers
