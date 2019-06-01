@@ -211,6 +211,30 @@ function errorMessage (text){
 // setDisplayOneEqual () 2x
 // inscribeOperator (input)
 
+// Keyboard events
+window.addEventListener('keydown', function(e){
+  const key = document.querySelector(`button[data-key="${e.keyCode}"]`)
+  if (key.classList.contains("digit")){
+    inscribeNumber(key);
+  }
+  else if (key.classList.contains("operator")) {
+    inscribeOperator(key);
+  }
+  else if (key.id === "clear") {
+    reset();
+  }
+  else if (key.id === "equal") {
+    setDisplayOneEqual();
+  }
+  else if (key.id === "point") {
+    addDecimal();
+  }
+  else if (key.id === "backSpace") {
+    removeDigit();
+  }
+
+});
+
 
 // Buttons onclick events
 clear.addEventListener('click',()=>{reset()});
